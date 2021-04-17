@@ -15,6 +15,8 @@ import 'package:place_picker/place_picker.dart';
 import 'constants.dart';
 
 class Forma extends StatefulWidget {
+
+  static String routeName = 'sendForma';
   final DatabaseReference db = FirebaseDatabase().reference();
 
   @override
