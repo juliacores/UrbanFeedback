@@ -14,6 +14,13 @@ import 'package:place_picker/place_picker.dart';
 
 import 'constants.dart';
 
+String problem = '',
+    recomendation = '',
+    category = '',
+    fotopath = '',
+    location = '';
+bool errorP = false, errorC = false, errorF = false, errorL = false;
+
 class Forma extends StatefulWidget {
 
   static String routeName = 'sendForma';
@@ -48,6 +55,7 @@ class _FormaState extends State<Forma> {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
         fotopath = _image.path;
+        errorF=false;
         print('image ' + fotopath);
       } else {
         print('No image selected.');
@@ -55,8 +63,22 @@ class _FormaState extends State<Forma> {
     });
   }
 
+  showPlacePicker() async {
+    LocationResult result = await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) =>
+            PlacePicker("AIzaSyBgmBTDkqf69_PerM7j-nkgM0_mVM0OnTM",displayLocation: LatLng(59.939207, 30.315374),)));
+
+    // Handle the result in your way
+    print('location ' + result.toString());
+    print('location.formattedAddress ' + result.formattedAddress);
+    setState(() {
+      location = result.formattedAddress;
+      errorL=false;
+    });
+  }
+
   Proverka() {
-    if (problem == null) {
+    if (problem == '') {
       print('No problem');
       setState(() {
         errorP = true;
@@ -65,7 +87,7 @@ class _FormaState extends State<Forma> {
       setState(() {
         errorP = false;
       });
-    if (category == null) {
+    if (category == '') {
       print('No category');
       setState(() {
         errorC = true;
@@ -74,7 +96,7 @@ class _FormaState extends State<Forma> {
       setState(() {
         errorC = false;
       });
-    if (fotopath == null) {
+    if (fotopath == '') {
       print('No fotopath');
       setState(() {
         errorF = true;
@@ -83,16 +105,20 @@ class _FormaState extends State<Forma> {
       setState(() {
         errorF = false;
       });
-    if (location == null) {
+    if (location == '') {
       print('No location');
       setState(() {
-        //errorL = true;
+        errorL = true;
       });
     } else
       setState(() {
         errorL = false;
       });
-    if (errorP && errorC && errorF && errorL)
+    print('errorP = ' + errorP.toString());
+    print('errorC = ' + errorC.toString());
+    print('errorF = ' + errorF.toString());
+    print('errorL = ' + errorL.toString());
+    if (errorP || errorC || errorF || errorL)
       return;
     else
       SendData();
@@ -107,14 +133,14 @@ class _FormaState extends State<Forma> {
         body: SafeArea(
           child: ListView(
             children: [
-              Question('Категория проблемы'),
+              Question('Категория проблемы *'),
               Category(),
-              Question('Фотография проблемы'),
+              Question('Фотография проблемы *'),
               Foto(getImage),
-              Question('Описание проблемы'),
+              Question('Описание проблемы *'),
               TextInput1(),
-              Question('Геолокация'),
-              Location(),
+              Question('Геолокация *'),
+              Location(showPlacePicker),
               Question('Рекомендация по решению проблемы'),
               TextInput2(),
               Send(Proverka)
@@ -130,7 +156,7 @@ void SendData() async {
   print('firebase connected');
 
   String name = fotopath.split('/').last;
-  print('name '+name);
+  print('name ' + name);
   firebase_storage.Reference firebaseStorageRef =
       firebase_storage.FirebaseStorage.instance.ref().child('photos/$name');
   print('firebase storage inited');
@@ -140,8 +166,6 @@ void SendData() async {
   firebase_storage.UploadTask uploadTask =
       firebaseStorageRef.putFile(io.File(fotopath), metadata);
   print('upload task created');
-
-  
 
   firebase_storage.TaskSnapshot taskSnapshot = await Future.value(uploadTask);
 
@@ -161,6 +185,7 @@ void SendData() async {
 
 class Foto extends StatelessWidget {
   Function getImage;
+
   Foto(Function getImage) {
     this.getImage = getImage;
   }
@@ -168,7 +193,14 @@ class Foto extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+        decoration: ShapeDecoration(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5),
+              side: BorderSide(
+                color: errorF ? Colors.red : Colors.grey,
+              )),
+        ),
+        margin: EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
         child: FlatButton(
             onPressed: getImage,
             child: Row(
@@ -176,7 +208,9 @@ class Foto extends StatelessWidget {
                 Icon(CupertinoIcons.photo_camera),
                 Padding(
                     padding: EdgeInsets.only(left: 5),
-                    child: Text('Добавить фото', style: Constants().accenttext))
+                    child: Text(
+                        fotopath == '' ? 'Добавить фото' : 'Фото выбрано',
+                        style: Constants().accenttext))
               ],
             )));
   }
@@ -184,6 +218,7 @@ class Foto extends StatelessWidget {
 
 class Question extends StatelessWidget {
   String text;
+
   Question(String text) {
     this.text = text;
   }
@@ -212,10 +247,12 @@ class _TextInput1State extends State<TextInput1> {
           },
           style: Constants().maintext,
           decoration: InputDecoration(
-              border: OutlineInputBorder(
+              enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5),
                   borderSide:
                       BorderSide(color: errorP ? Colors.red : Colors.grey)),
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
               hintText: 'Опишите проблему'),
         ));
   }
@@ -250,17 +287,18 @@ class Category extends StatefulWidget {
 
 class _CategoryState extends State<Category> {
   String val = '';
+
   @override
   Widget build(BuildContext context) {
     return Container(
         margin: EdgeInsets.all(16),
-        padding: EdgeInsets.all(8),
+        padding: EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
         decoration: ShapeDecoration(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5),
                 side: BorderSide(color: errorC ? Colors.red : Colors.grey))),
         child: DropdownButton<String>(
-          underline: null,
+          underline: Align(),
           hint: Text('Выберите категорию'),
           value: val == '' ? null : val,
           items: problems.map((String value) {
@@ -272,6 +310,7 @@ class _CategoryState extends State<Category> {
           onChanged: (String value) {
             category = value;
             setState(() {
+              errorC=false;
               val = value;
             });
           },
@@ -289,29 +328,34 @@ List<String> problems = <String>[
 ];
 
 class Location extends StatelessWidget {
-  void showPlacePicker(BuildContext context) async {
-    LocationResult result = await Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) =>
-            PlacePicker("AIzaSyBgmBTDkqf69_PerM7j-nkgM0_mVM0OnTM")));
+  Function showPlacePicker;
 
-    // Handle the result in your way
-    print('location ' + result.toString());
-    print('location.formattedAddress ' + result.formattedAddress);
-    location = result.formattedAddress;
+  Location(Function function) {
+    this.showPlacePicker = function;
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+        decoration: ShapeDecoration(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5),
+              side: BorderSide(
+                color: errorL ? Colors.red : Colors.grey,
+              )),
+        ),
+        margin: EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
         child: FlatButton(
-            onPressed: () {
-              showPlacePicker(context);
-            },
+            onPressed: showPlacePicker,
             child: Row(
               children: [
                 Icon(CupertinoIcons.location),
-                Text('Выбрать геолокацию', style: Constants().accenttext)
+                Expanded(
+                    child: Text(
+                        location == ''
+                            ? 'Выбрать геолокацию'
+                            : 'Выбранная локация: ' + location,
+                        style: Constants().accenttext))
               ],
             )));
   }
@@ -319,9 +363,11 @@ class Location extends StatelessWidget {
 
 class Send extends StatelessWidget {
   Function func;
+
   Send(Function func) {
     this.func = func;
   }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -337,6 +383,3 @@ class Send extends StatelessWidget {
             child: Text('Отправить сообщение', style: Constants().buttontext)));
   }
 }
-
-String problem, recomendation, category, fotopath, location;
-bool errorP = false, errorC = false, errorF = false, errorL = false;

@@ -2,11 +2,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz/home.dart';
 import 'constants.dart';
+import 'constants.dart';
 import 'form.dart';
 
 void main() async {
-WidgetsFlutterBinding.ensureInitialized();
-await Firebase.initializeApp();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
 
   runApp(MyApp());
 }
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Urban Feedback',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -27,13 +28,19 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.lightGreen,
+        //primaryColor: Constants.main,
+        primarySwatch: Colors.teal,
         // This makes the visual density adapt to the platform that you run
         // the app on. For desktop platforms, the controls will be smaller and
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Home(),
+      //home: Home(),
+      initialRoute: '/',
+      routes: {
+        '/':(context)=> Home(),
+        Forma.routeName:(ctx)=>Forma(),
+      },
     );
   }
 }
