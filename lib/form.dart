@@ -13,6 +13,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:place_picker/place_picker.dart';
 
 import 'constants.dart';
+import 'header.dart';
 
 String problem = '',
     recomendation = '',
@@ -133,6 +134,7 @@ class _FormaState extends State<Forma> {
         body: SafeArea(
           child: ListView(
             children: [
+              Header(text:'Сообщение'),
               Question('Категория проблемы *'),
               Category(),
               Question('Фотография проблемы *'),

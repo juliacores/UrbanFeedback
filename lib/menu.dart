@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'constants.dart';
+
 
 class BottomNavBar extends StatefulWidget {
   final int currentIndex;
@@ -94,7 +96,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                             ? CustomIcons.discover
                             : Icons.home_outlined),
                         label: false ? 'Discover' : 'Home',
-                        backgroundColor: ColorConstants.white,
+                        backgroundColor: Colors.white,
                       ),
                       BottomNavigationBarItem(
                         icon: Icon(CustomIcons.play),
