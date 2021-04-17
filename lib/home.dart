@@ -13,7 +13,8 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavBar(currentIndex: 1),
+        appBar: emptyAppBar(),
+      bottomNavigationBar: BottomNavBar(currentIndex: 0),
       body: SafeArea(
           child: ListView(
             children: [
@@ -34,6 +35,7 @@ class Heading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.only(top:10,left: 20,right: 20,bottom: 10),
       child: Text(
         'Поможем Петербургу стать комфортным',
       style: Constants().header)
@@ -45,6 +47,7 @@ class Description extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.only(left: 20,right: 20),
       child: Text(
         '''Здесь вы можете оставить отзыв о проблеме в городской инфраструктуре СПб, а также посмотреть аналитику проблем города.
 
@@ -68,7 +71,7 @@ class Message extends StatelessWidget {
                     borderRadius: BorderRadius.circular(5)),
                 color: Constants.accent),
             margin: EdgeInsets.only(left: 40, right: 40, top: 10),
-            padding: EdgeInsets.all(16),
+            //padding: EdgeInsets.all(6),
       child: FlatButton(
         child: Text(
           'Сообщить о проблеме',

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io' as io;
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -13,6 +14,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:place_picker/place_picker.dart';
 
 import 'constants.dart';
+import 'dialog.dart';
 import 'header.dart';
 
 String problem = '',
@@ -21,33 +23,22 @@ String problem = '',
     fotopath = '',
     location = '';
 bool errorP = false, errorC = false, errorF = false, errorL = false;
-
+bool isUploading = false;
 class Forma extends StatefulWidget {
 
   static String routeName = 'sendForma';
-  final DatabaseReference db = FirebaseDatabase().reference();
+  //final DatabaseReference db = FirebaseDatabase(databaseURL: 'https://urban-feedback-default-rtdb.europe-west1.firebasedatabase.app').reference();
 
   @override
   _FormaState createState() => _FormaState();
 }
 
 class _FormaState extends State<Forma> {
-  @override
-  void initState() {
-    super.initState();
 
-    // Demonstrates configuring the database directly
-    final FirebaseDatabase database = FirebaseDatabase();
-
-    database.reference().child('counter').once().then((DataSnapshot snapshot) {
-      print('Connected to second database and read ${snapshot.value}');
-    });
-
-    database.setPersistenceCacheSizeBytes(10000000);
-  }
 
   File _image;
   final picker = ImagePicker();
+
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.camera);
@@ -77,8 +68,64 @@ class _FormaState extends State<Forma> {
       errorL=false;
     });
   }
+  void SendData() async {
+    final FirebaseDatabase database = FirebaseDatabase(databaseURL: 'https://urban-feedback-default-rtdb.europe-west1.firebasedatabase.app');
+
+    //database.reference().child('problems');
+
+    DatabaseReference dbRef = database.reference().child('problems');
+    print('firebase connected');
+
+    //FirebaseStorage firebaseStorage = FirebaseStorage.instance;
+
+    String name = fotopath.split('/').last;
+    print('name ' + name);
+    firebase_storage.Reference firebaseStorageRef =
+    firebase_storage.FirebaseStorage.instance.ref().child('photos/$name');
+    print('firebase storage inited');
+    final metadata = firebase_storage.SettableMetadata(
+        contentType: 'image/jpeg',
+        customMetadata: {'picked-file-path': fotopath});
+
+    firebase_storage.UploadTask uploadTask =
+    firebaseStorageRef.putFile(io.File(fotopath), metadata);
+    print('upload task created');
+
+    firebase_storage.TaskSnapshot taskSnapshot = await Future.value(uploadTask);
+
+    print('send started');
+    taskSnapshot.ref.getDownloadURL().then((value) {
+      dbRef.push().set({
+        "category": category,
+        "problem": problem,
+        "location": location,
+        "recommendation": recomendation == null ? '' : recomendation,
+        "photo_url": value
+      }).then((value) {
+        setState(() {
+          isUploading = false;
+        });
+        print('send completed');
+
+        Navigator.of(context).pop();
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => CustomDialog(
+            title: "Форма отправлена!",
+            description: "Благодарим за отправку проблемы.",
+            buttonText: "Продолжить",
+          ),
+        );
+      });
+    });
+  }
 
   Proverka() {
+    if(isUploading)
+      return;
+    setState(() {
+      isUploading = true;
+    });
     if (problem == '') {
       print('No problem');
       setState(() {
@@ -119,8 +166,12 @@ class _FormaState extends State<Forma> {
     print('errorC = ' + errorC.toString());
     print('errorF = ' + errorF.toString());
     print('errorL = ' + errorL.toString());
-    if (errorP || errorC || errorF || errorL)
+    if (errorP || errorC || errorF || errorL) {
+      setState(() {
+        isUploading = false;
+      });
       return;
+    }
     else
       SendData();
   }
@@ -128,10 +179,11 @@ class _FormaState extends State<Forma> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(elevation: 0,title: Text('Сообщение'),),
         body: SafeArea(
           child: ListView(
             children: [
-              Header(text:'Сообщение'),
+              //Header(text:'Сообщение'),
               Question('Категория проблемы *'),
               Category(),
               Question('Фотография проблемы *'),
@@ -149,38 +201,7 @@ class _FormaState extends State<Forma> {
   }
 }
 
-void SendData() async {
-  DatabaseReference dbRef =
-      FirebaseDatabase.instance.reference().child('problems');
-  print('firebase connected');
 
-  String name = fotopath.split('/').last;
-  print('name ' + name);
-  firebase_storage.Reference firebaseStorageRef =
-      firebase_storage.FirebaseStorage.instance.ref().child('photos/$name');
-  print('firebase storage inited');
-  final metadata = firebase_storage.SettableMetadata(
-      contentType: 'image/jpeg',
-      customMetadata: {'picked-file-path': fotopath});
-  firebase_storage.UploadTask uploadTask =
-      firebaseStorageRef.putFile(io.File(fotopath), metadata);
-  print('upload task created');
-
-  firebase_storage.TaskSnapshot taskSnapshot = await Future.value(uploadTask);
-
-  print('send started');
-  taskSnapshot.ref.getDownloadURL().then((value) {
-    dbRef.push().set({
-      "catregory": category,
-      "problem": problem,
-      "location": location,
-      "recomendation": recomendation == null ? '' : recomendation,
-      "photo_url": value
-    }).then((value) {
-      print('send complited');
-    });
-  });
-}
 
 class Foto extends StatelessWidget {
   Function getImage;
@@ -379,6 +400,8 @@ class Send extends StatelessWidget {
                 color: Constants.accent),
             margin: EdgeInsets.only(left: 40, right: 40, top: 10),
             padding: EdgeInsets.all(16),
-            child: Text('Отправить сообщение', style: Constants().buttontext)));
+            child: isUploading?
+            CircularProgressIndicator(backgroundColor: Colors.white30,)
+                :Text('Отправить сообщение', style: Constants().buttontext)));
   }
 }

@@ -77,12 +77,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
     screenWidth = MediaQuery.of(context).size.width;
 
     return Container(
-        color: Colors.white30,
+        color: Constants.background,
         child:
         SafeArea(
             maintainBottomViewPadding: true,
             child: SizedBox(
-              height: 56,
+              height: 46,
               width: double.infinity,
               //height: 100,
               child:
@@ -91,7 +91,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                     currentIndex: widget.currentIndex,
                     elevation: 0,
                     backgroundColor: Constants.background,
-                    selectedLabelStyle: Constants().accenttext,
+                    selectedLabelStyle: Constants().menuaccent,
                     unselectedLabelStyle: Constants().menu,
                     iconSize: 20,
                     items: [

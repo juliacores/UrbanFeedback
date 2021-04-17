@@ -10,6 +10,7 @@ import 'form.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp();
 
   runApp(MyApp());
@@ -45,8 +46,10 @@ class MyApp extends StatelessWidget {
       //home: Home(),
       initialRoute: '/',
       routes: {
-        '/':(context)=> Profile(),
+        '/':(context)=> Home(),
         Forma.routeName:(ctx)=>Forma(),
+        Profile.routeName:(ctx)=>Profile(),
+        Analytics.routeName:(ctx)=>Analytics(),
       },
     );
   }
