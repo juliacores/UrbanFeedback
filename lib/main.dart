@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:quiz/analytics.dart';
 import 'package:quiz/home.dart';
+import 'package:quiz/profile.dart';
 import 'constants.dart';
 import 'constants.dart';
 import 'form.dart';
@@ -43,7 +45,7 @@ class MyApp extends StatelessWidget {
       //home: Home(),
       initialRoute: '/',
       routes: {
-        '/':(context)=> Home(),
+        '/':(context)=> Profile(),
         Forma.routeName:(ctx)=>Forma(),
       },
     );

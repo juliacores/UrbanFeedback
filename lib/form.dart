@@ -128,9 +128,6 @@ class _FormaState extends State<Forma> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Сообщение о проблеме'),
-        ),
         body: SafeArea(
           child: ListView(
             children: [

@@ -53,7 +53,7 @@ class Constants {
 
   get menu => TextStyle(
         fontSize: 10,
-        color: black,
+        color: Colors.grey,
         fontWeight: FontWeight.w400,
       );
 }

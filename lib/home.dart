@@ -5,14 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'constants.dart';
 import 'form.dart';
+import 'header.dart';
+import 'menu.dart';
 
 class Home extends StatelessWidget {
+  static String routeName = '/';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: BottomNavBar(currentIndex: 1),
       body: SafeArea(
           child: ListView(
             children: [
+            Header(text:'Urban Feedback'),
             Image.asset('assets/banner.png'),
             Heading(),
             Description(),

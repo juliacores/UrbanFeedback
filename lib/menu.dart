@@ -1,4 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:quiz/analytics.dart';
+import 'package:quiz/home.dart';
+import 'package:quiz/profile.dart';
 
 import 'constants.dart';
 
@@ -36,16 +40,16 @@ class _BottomNavBarState extends State<BottomNavBar> {
     Widget screen;
     switch (index) {
       case 0:
-        screen = AllCoursesScreen();
-        routeName = AllCoursesScreen.routeName;
+        screen = Home();
+        routeName = Home.routeName;
         break;
       case 1:
-        screen = MyCoursesScreen();
-        routeName = MyCoursesScreen.routeName;
+        screen = Analytics();
+        routeName = Analytics.routeName;
         break;
       case 2:
-        screen = ProfileScreen();
-        routeName = ProfileScreen.routeName;
+        screen = Profile();
+        routeName = Profile.routeName;
         break;
       default:
         break;
@@ -86,30 +90,28 @@ class _BottomNavBarState extends State<BottomNavBar> {
                     onTap: onTabTapped,
                     currentIndex: widget.currentIndex,
                     elevation: 0,
-                    backgroundColor: Colors.white30,
-                    selectedLabelStyle: Constants().textStyleBottomNavBarSelected,
-                    unselectedLabelStyle: Constants().textStyleBottomNavBarUnselected,
-                    iconSize: Constants().bottomNavBarIconSize,
+                    backgroundColor: Constants.background,
+                    selectedLabelStyle: Constants().accenttext,
+                    unselectedLabelStyle: Constants().menu,
+                    iconSize: 20,
                     items: [
                       BottomNavigationBarItem(
-                        icon: Icon(false
-                            ? CustomIcons.discover
-                            : Icons.home_outlined),
-                        label: false ? 'Discover' : 'Home',
+                        icon: Icon(CupertinoIcons.house),
+                        label:'Сообщение',
                         backgroundColor: Colors.white,
                       ),
                       BottomNavigationBarItem(
-                        icon: Icon(CustomIcons.play),
-                        label: 'My courses',
+                        icon: Icon(CupertinoIcons.chart_pie),
+                        label: 'Анализ проблем',
                       ),
                       BottomNavigationBarItem(
-                        icon: Icon(CustomIcons.person),
-                        label: 'Profile',
+                        icon: Icon(CupertinoIcons.person),
+                        label: 'Мой профиль',
                       ),
                     ],
                   ),
-                ],
               ),
-            )));
+        )
+            );
   }
 }
