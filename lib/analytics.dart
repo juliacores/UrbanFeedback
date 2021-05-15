@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:quiz/problems_screen.dart';
 import 'constants.dart';
 import 'constants.dart';
 import 'header.dart';
@@ -32,6 +33,7 @@ class Map extends StatelessWidget {
                 Container(
                     child: Row(children: [
                   Icon(CupertinoIcons.map, color: Constants.accent),
+                  SizedBox(width: 10,),
                   Text('Карта проблем', style: Constants().subheader),
                 ])),
                 Icon(CupertinoIcons.forward, color: Constants.black)
@@ -45,13 +47,16 @@ class Problems extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(margin: EdgeInsets.all(10),
         child: FlatButton(
-            onPressed: null,
+            onPressed: (){
+              Navigator.of(context).pushNamed(ProblemsListScreen.routeName);
+            },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
                     child: Row(children: [
                   Icon(CupertinoIcons.chart_pie, color: Constants.accent),
+                      SizedBox(width: 10,),
                   Text('Список проблем', style: Constants().subheader),
                 ])),
                 Icon(CupertinoIcons.forward, color: Constants.black)

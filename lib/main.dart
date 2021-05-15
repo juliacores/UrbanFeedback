@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz/analytics.dart';
 import 'package:quiz/home.dart';
+import 'package:quiz/problems_screen.dart';
 import 'package:quiz/profile.dart';
 import 'constants.dart';
 import 'constants.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
         Forma.routeName:(ctx)=>Forma(),
         Profile.routeName:(ctx)=>Profile(),
         Analytics.routeName:(ctx)=>Analytics(),
+        ProblemsListScreen.routeName:(ctx)=>ProblemsListScreen(),
       },
     );
   }
