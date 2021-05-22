@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'constants.dart';
-import 'header.dart';
-import 'menu.dart';
+import '../constants.dart';
+import '../modules/elements/header.dart';
+import '../modules/menu.dart';
 
 class Profile extends StatelessWidget {
   static String routeName = 'profileInfo';

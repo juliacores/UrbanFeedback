@@ -13,9 +13,9 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:place_picker/place_picker.dart';
 
-import 'constants.dart';
-import 'dialog.dart';
-import 'header.dart';
+import '../constants.dart';
+import '../modules/dialog.dart';
+import '../modules/elements/header.dart';
 
 String problem = '',
     recomendation = '',
@@ -24,6 +24,7 @@ String problem = '',
     location = '';
 bool errorP = false, errorC = false, errorF = false, errorL = false;
 bool isUploading = false;
+double lat,lon;
 class Forma extends StatefulWidget {
 
   static String routeName = 'sendForma';
@@ -65,6 +66,8 @@ class _FormaState extends State<Forma> {
     print('location.formattedAddress ' + result.formattedAddress);
     setState(() {
       location = result.formattedAddress;
+      lat = result.latLng.latitude;
+      lon = result.latLng.longitude;
       errorL=false;
     });
   }
@@ -100,7 +103,9 @@ class _FormaState extends State<Forma> {
         "problem": problem,
         "location": location,
         "recommendation": recomendation == null ? '' : recomendation,
-        "photo_url": value
+        "photo_url": value,
+        'lat':lat,
+        'lon':lon
       }).then((value) {
         setState(() {
           isUploading = false;

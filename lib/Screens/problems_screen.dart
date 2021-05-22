@@ -124,16 +124,22 @@ class InfoCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Flexible(
-                  flex:1,child: Column(
+                  flex:2,child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text('категория:',style: Constants().maintext,),
                   Container(
                     child: Text(category,style: Constants().subheader,),
                     alignment: Alignment.centerLeft,
                   ),
+                  SizedBox(height: 10,),
+                  Text('проблема:',style: Constants().maintext),
                   Container(
-                    child: Text(problem,style: Constants().maintext,),
+                    child: Text(problem,style: Constants().subheader,),
                     alignment: Alignment.centerLeft,
                   ),
+                  SizedBox(height: 10,),
+                  Text('рекомендация:',style: Constants().maintext),
                   Container(
                     child: Text(recommendation,style: Constants().maintext,),
                     alignment: Alignment.centerLeft,
@@ -142,6 +148,7 @@ class InfoCard extends StatelessWidget {
               )), Flexible(flex:1,child: Column(
                 children: [
                   Image.network(photo_url,fit: BoxFit.fitWidth,),
+                  SizedBox(height: 10,),
                   Container(
                     child: Text(location,style: Constants().maintext,),
                   )
