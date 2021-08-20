@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android.iml" filepath="$PROJECT_DIR$/.idea/modules/android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1526445867/android.firebase_core.iml" filepath="$PROJECT_DIR$/.idea/modules/1526445867/android.firebase_core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/496763597/android.firebase_database.iml" filepath="$PROJECT_DIR$/.idea/modules/496763597/android.firebase_database.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1645449225/android.firebase_storage.iml" filepath="$PROJECT_DIR$/.idea/modules/1645449225/android.firebase_storage.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/2090664657/android.flutter_plugin_android_lifecycle.iml" filepath="$PROJECT_DIR$/.idea/modules/2090664657/android.flutter_plugin_android_lifecycle.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/315717202/android.google_maps_flutter.iml" filepath="$PROJECT_DIR$/.idea/modules/315717202/android.google_maps_flutter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1977951138/android.image_picker.iml" filepath="$PROJECT_DIR$/.idea/modules/1977951138/android.image_picker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1256048376/android.location.iml" filepath="$PROJECT_DIR$/.idea/modules/1256048376/android.location.iml" />
+    </modules>
+  </component>
+</project>

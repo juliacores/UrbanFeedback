@@ -25,15 +25,15 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Take photos</string>
+	<string>Предоставьте доступ к камере для съемки фото в реальном времени</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>location add</string>
+	<string>предоставьте доступ к локации для выбора места</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>location add</string>
+	<string>предоставьте доступ к локации для выбора места</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Take shots</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Select photos</string>
+	<string>Предоставьте доступ к галерее для выбора фото для отправки</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
